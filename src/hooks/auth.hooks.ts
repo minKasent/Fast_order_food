@@ -1,10 +1,13 @@
+import envConfig from '@/config'
 import { Role } from '@/constants/type'
 import { AuthError, ForbiddenError } from '@/utils/errors'
 import { verifyAccessToken } from '@/utils/jwt'
 import { FastifyRequest } from 'fastify'
 
 export const pauseApiHook = async (request: FastifyRequest) => {
-  // throw new ForbiddenError('Chức năng bị tạm ngưng')
+  if (envConfig.PAUSE_SOME_ENDPOINTS) {
+    throw new ForbiddenError('Chức năng bị tạm ngưng')
+  }
 }
 
 export const requireLoginedHook = async (request: FastifyRequest) => {
