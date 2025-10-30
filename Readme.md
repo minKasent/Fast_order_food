@@ -45,7 +45,7 @@ Trong source code có chứa file `.env` để config, trong file này bạn có
 
 Khi upload thì hình ảnh sẽ được đi vào thư mục `/uploads` trong folder `server`
 
-## Format response 
+## Format response trả về
 
 Định dạng trả về là JSON, và luôn có trường `message`, ngoài ra có thể sẽ có trường `data` hoặc `errors`
 
