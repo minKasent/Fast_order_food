@@ -23,9 +23,23 @@ import orderRoutes from '@/routes/order.route'
 import { socketPlugin } from '@/plugins/socket.plugins'
 import indicatorRoutes from '@/routes/indicator.route'
 import autoRemoveRefreshTokenJob from '@/jobs/autoRemoveRefreshToken.job'
+import http from 'http'
+
+// Tạo HTTP server với giới hạn header size lớn hơn (32KB thay vì 8KB mặc định)
+const server = http.createServer({
+  maxHeaderSize: 32 * 1024 // 32KB
+})
 
 const fastify = Fastify({
-  logger: false
+  logger: false,
+  serverFactory: (handler) => {
+    server.on('request', handler)
+    return server
+  },
+  // Tăng giới hạn kích thước request body và headers để tránh lỗi 431
+  bodyLimit: 10 * 1024 * 1024, // 10MB
+  // Tăng giới hạn header size (mặc định là 16KB)
+  maxParamLength: 500 // Tăng độ dài params
 })
 
 // Run the server!
