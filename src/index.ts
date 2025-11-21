@@ -49,7 +49,6 @@ const start = async () => {
     autoRemoveRefreshTokenJob()
     const whitelist = [
       envConfig.CLIENT_URL,
-      'http://160.250.247.146:3000',
       'http://localhost:3000',
       'https://minka.io.vn',
       'https://www.minka.io.vn'
