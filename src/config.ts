@@ -3,14 +3,17 @@ import path from 'path'
 import z from 'zod'
 import { config } from 'dotenv'
 
+// Load .env.production nếu NODE_ENV=production, ngược lại load .env
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env'
+
 config({
-  path: '.env'
+  path: envFile
 })
 
 const checkEnv = async () => {
   const chalk = (await import('chalk')).default
-  if (!fs.existsSync(path.resolve('.env'))) {
-    console.log(chalk.red(`Không tìm thấy file môi trường .env`))
+  if (!fs.existsSync(path.resolve(envFile))) {
+    console.log(chalk.red(`Không tìm thấy file môi trường ${envFile}`))
     process.exit(1)
   }
 }

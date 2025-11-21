@@ -47,10 +47,18 @@ const start = async () => {
   try {
     createFolder(path.resolve(envConfig.UPLOAD_FOLDER))
     autoRemoveRefreshTokenJob()
-    const whitelist = ['*']
+    const whitelist = [
+      envConfig.CLIENT_URL,
+      'http://160.250.247.146:3000',
+      'http://localhost:3000',
+      'https://minka.io.vn',
+      'https://www.minka.io.vn'
+    ]
     fastify.register(cors, {
-      origin: whitelist, // Cho phép tất cả các domain gọi API
-      credentials: true // Cho phép trình duyệt gửi cookie đến server
+      origin: whitelist, // Cho phép các domain cụ thể
+      credentials: true, // Cho phép trình duyệt gửi cookie đến server
+      allowedHeaders: ['Content-Type', 'Authorization'], // Cho phép Authorization header
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
     })
 
     fastify.register(fastifyAuth, {
@@ -66,7 +74,8 @@ const start = async () => {
     fastify.register(errorHandlerPlugin)
     fastify.register(fastifySocketIO, {
       cors: {
-        origin: envConfig.CLIENT_URL
+        origin: whitelist,
+        methods: ['GET', 'POST']
       }
     })
     fastify.register(socketPlugin)
